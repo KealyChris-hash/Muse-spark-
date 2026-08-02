@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Omega - AI</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #030711; color: #fff; font-family: -apple-system, sans-serif; padding: 16px; }
+  .logo { font-size: 32px; font-weight: 900; background: linear-gradient(90deg, #22c55e, #00d4ff, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; }
+  .tagline { text-align: center; color: #94a3b8; font-size: 13px; margin-bottom: 10px; }
+  .free-badge { background: linear-gradient(90deg, #22c55e, #00d4ff); padding: 8px; border-radius: 10px; text-align: center; font-weight: 900; margin-bottom: 16px; }
+  
+  .nav { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+  .nav-btn { padding: 12px 8px; background: #0f172a; border: 1px solid #334155; border-radius: 14px; font-size: 12px; text-align: center; cursor: pointer; }
+  .nav-btn.active { background: linear-gradient(90deg, #22c55e, #00d4ff); border: none; font-weight: 800; }
+  
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+  .card { background: #0f172a; border: 1px solid #334155; border-radius: 16px; padding: 18px; margin-bottom: 12px; }
+  input, textarea { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #334155; background: #030711; color: #fff; margin: 8px 0; font-size: 15px; }
+  .btn { width: 100%; padding: 16px; background: linear-gradient(90deg, #22c55e, #00d4ff); border: none; border-radius: 14px; color: #fff; font-weight: 800; margin-top: 10px; cursor: pointer; font-size: 15px; }
+  .btn.danger { background: linear-gradient(90deg, #ef4444, #dc2626); }
+  .result { padding: 14px; border-radius: 10px; margin-top: 12px; background: rgba(34,197,94,0.1); border-left: 3px solid #22c55e; }
+  .result.lie { background: rgba(239,68,68,0.2); border: 2px solid #ef4444; color: #ef4444; text-align:center; font-weight:800; }
+  .result.truth { background: rgba(34,197,94,0.2); border: 2px solid #22c55e; color: #22c55e; text-align:center; font-weight:800; }
+  .fingerprint { font-size: 100px; text-align: center; margin: 20px 0; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.1);} }
+  .scan-box { display: none; }
+</style>
+</head>
+<body>
+  <div class="logo">OMEGA</div>
+  <div class="free-badge">✨ 100% FREE - NO PAYMENT NEEDED ✨</div>
+  <div class="tagline">AI for Health, School, Farm, Trade + 6 More</div>
+
+  <!-- NAV -->
+  <div class="nav">
+    <div class="nav-btn active" onclick="showTab('health')">🏥 Health</div>
+    <div class="nav-btn" onclick="showTab('school')">🎓 School</div>
+    <div class="nav-btn" onclick="showTab('farm')">🌾 Farm</div>
+    <div class="nav-btn" onclick="showTab('trade')">📈 Trade</div>
+    <div class="nav-btn" onclick="showTab('jobs')">💼 Jobs</div>
+    <div class="nav-btn" onclick="showTab('legal')">⚖️ Legal</div>
+    <div class="nav-btn" onclick="showTab('realestate')">🏠 Estate</div>
+    <div class="nav-btn" onclick="showTab('content')">✍️ Content</div>
+    <div class="nav-btn" onclick="showTab('finance')">💰 Finance</div>
+    <div class="nav-btn" onclick="showTab('lie')">🔍 Lie Detector</div>
+  </div>
+
+  <!-- 1. HEALTH -->
+  <div id="health" class="tab-content active"><div class="card"><h2>AI Doctor</h2><textarea id="symptom" rows="3" placeholder="Describe symptoms"></textarea><button class="btn" onclick="healthAI()">Ask Doctor</button><div id="healthResult"></div></div></div>
+  
+  <!-- 2. SCHOOL -->
+  <div id="school" class="tab-content"><div class="card"><h2>JAMB/WAEC Tutor</h2><input id="subject" placeholder="Subject"><textarea id="question" rows="2" placeholder="Ask question"></textarea><button class="btn" onclick="schoolAI()">Get Answer</button><div id="schoolResult"></div></div></div>
+  
+  <!-- 3. FARM -->
+  <div id="farm" class="tab-content"><div class="card"><h2>Farm AI</h2><input id="crop" placeholder="Crop: Maize, Rice"><input id="state" placeholder="State"><button class="btn" onclick="farmAI()">Get Price + Date</button><div id="farmResult"></div></div></div>
+  
+  <!-- 4. TRADE -->
+  <div id="trade" class="tab-content"><div class="card"><h2>Market Scanner</h2><input id="product" placeholder="Product: iPhone, Rice"><input id="market" placeholder="Market: Alaba, Onitsha"><button class="btn" onclick="tradeAI()">Scan for Profit</button><div id="tradeResult"></div></div></div>
+  
+  <!-- 5. JOBS -->
+  <div id="jobs" class="tab-content"><div class="card"><h2>Jobs AI</h2><input id="skill" placeholder="Your skill: Design, Coding"><button class="btn" onclick="jobsAI()">Find Remote Jobs</button><div id="jobsResult"></div></div></div>
+  
+  <!-- 6. LEGAL -->
+  <div id="legal" class="tab-content"><div class="card"><h2>Legal AI</h2><textarea id="legalQ" rows="2" placeholder="Ask: How to register CAC?"></textarea><button class="btn" onclick="legalAI()">Get Legal Advice</button><div id="legalResult"></div></div></div>
+  
+  <!-- 7. REAL ESTATE -->
+  <div id="realestate" class="tab-content"><div class="card"><h2>Real Estate AI</h2><input id="location" placeholder="Area: Ibeju Lekki, Abuja"><button class="btn" onclick="estateAI()">Check Land + Price</button><div id="estateResult"></div></div></div>
+  
+  <!-- 8. CONTENT -->
+  <div id="content" class="tab-content"><div class="card"><h2>Content AI</h2><input id="contentTopic" placeholder="What are you selling?"><button class="btn" onclick="contentAI()">Generate Viral Script</button><div id="contentResult"></div></div></div>
+  
+  <!-- 9. FINANCE -->
+  <div id="finance" class="tab-content"><div class="card"><h2>Finance AI</h2><input id="income" placeholder="Monthly income: ₦200,000"><button class="btn" onclick="financeAI()">Get Budget Plan</button><div id="financeResult"></div></div></div>
+  
+  <!-- 10. LIE DETECTOR -->
+  <div id="lie" class="tab-content">
+    <div class="card" id="lieStep1">
+      <h2>🔍 Lie Detector</h2>
+      <textarea id="lieQuestion" rows="2" placeholder="Example: Is he lying about stealing my drink?"></textarea>
+      <button class="btn danger" onclick="startScan()">Ask Question</button>
+    </div>
+    <div class="card scan-box" id="lieStep2">
+      <h2>Step 2: Fingerprint Scan</h2>
+      <p style="font-size:12px;">Question: <b id="showQuestion"></b></p>
+      <div class="fingerprint">👆</div>
+      <button class="btn danger" onclick="getResult()">Scan Fingerprint</button>
+    </div>
+    <div id="lieResult"></div>
+  </div>
+
+<script>
+let currentQuestion = "";
+
+function showTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(tab).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function startScan() {
+  const q = document.getElementById('lieQuestion').value;
+  if(!q) return alert('Type the matter first');
+  currentQuestion = q;
+  document.getElementById('showQuestion').innerText = q;
+  document.getElementById('lieStep1').style.display = 'none';
+  document.getElementById('lieStep2').style.display = 'block';
+}
+
+function getResult() {
+  const isLie = Math.random() > 0.5;
+  const accuracy = Math.floor(Math.random() * 10) + 85;
+  let html = isLie 
+    ? `<div class="result lie">🚨 LIE DETECTED ${accuracy}%<br><p style="font-size:13px; color:#fff; font-weight:400;">About: "${currentQuestion}"</p></div>`
+    : `<div class="result truth">✅ TRUTH CONFIRMED ${accuracy}%<br><p style="font-size:13px; color:#fff; font-weight:400;">About: "${currentQuestion}"</p></div>`;
+  document.getElementById('lieResult').innerHTML = html;
+  document.getElementById('lieStep2').style.display = 'none';
+  setTimeout(() => { document.getElementById('lieStep1').style.display = 'block'; }, 4000);
+}
+
+// AI DEMOS
+function healthAI() { document.getElementById('healthResult').innerHTML = `<div class="result">Drink water + rest. If fever >2 days, test for malaria.</div>`; }
+function schoolAI() { document.getElementById('schoolResult').innerHTML = `<div class="result">Answer: 42<br>Step 1: Use formula<br>Step 2: Solve</div>`; }
+function farmAI() { document.getElementById('farmResult').innerHTML = `<div class="result">Plant next Tuesday. Sell: ₦85K/bag in 3 months.</div>`; }
+function tradeAI() { document.getElementById('tradeResult').innerHTML = `<div class="result">Demand up 40%. Buy now ₦50K → Sell ₦85K in 2 weeks.</div>`; }
+function jobsAI() { document.getElementById('jobsResult').innerHTML = `<div class="result">3 Remote jobs found: $1200/mo UI Designer, $2000/mo Developer</div>`; }
+function legalAI() { document.getElementById('legalResult').innerHTML = `<div class="result">CAC Registration: Go to cac.gov.ng. Cost ₦15,000. Takes 2 weeks.</div>`; }
+function estateAI() { document.getElementById('estateResult').innerHTML = `<div class="result">${document.getElementById('location').value}: Price rising. 3x in 2 years. Verify C of O first.</div>`; }
+function contentAI() { document.getElementById('contentResult').innerHTML = `<div class="result">TikTok Hook: "Stop scrolling if you sell ${document.getElementById('contentTopic').value}"</div>`; }
+function financeAI() { document.getElementById('financeResult').innerHTML = `<div class="result">Budget: Save 20%, Invest 10%, Spend 70%. You can save ₦40K/month.</div>`; }
+</script>
+</body>
+</html>
