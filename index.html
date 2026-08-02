@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Omega - AI </title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #030711; color: #fff; font-family: -apple-system, sans-serif; padding: 16px; min-height: 100vh; }
+  .logo { font-size: 32px; font-weight: 900; background: linear-gradient(90deg, #22c55e, #00d4ff, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; }
+  .tagline { text-align: center; color: #94a3b8; font-size: 13px; margin-bottom: 20px; }
+  
+  .nav { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+  .nav-btn { padding: 12px 8px; background: #0f172a; border: 1px solid #334155; border-radius: 14px; font-size: 12px; text-align: center; cursor: pointer; }
+  .nav-btn.active { background: linear-gradient(90deg, #22c55e, #00d4ff); border: none; font-weight: 800; }
+  
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+  
+  .card { background: #0f172a; border: 1px solid #334155; border-radius: 16px; padding: 18px; margin-bottom: 12px; }
+  input, textarea { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #334155; background: #030711; color: #fff; margin: 8px 0; font-size: 15px; }
+  .btn { width: 100%; padding: 16px; background: linear-gradient(90deg, #22c55e, #00d4ff); border: none; border-radius: 14px; color: #fff; font-weight: 800; margin-top: 10px; cursor: pointer; font-size: 15px; }
+  .result { background: rgba(34,197,94,0.1); border-left: 3px solid #22c55e; padding: 14px; border-radius: 10px; margin-top: 12px; font-size: 14px; }
+  .price { font-size: 18px; font-weight: 900; color: #22c55e; }
+</style>
+</head>
+<body>
+  <div class="logo">OMEGA</div>
+  <div class="tagline">AI for Health, School, Farm, Trade</div>
+
+  <!-- NAV -->
+  <div class="nav">
+    <div class="nav-btn active" onclick="showTab('health')">🏥 Health</div>
+    <div class="nav-btn" onclick="showTab('school')">🎓 School</div>
+    <div class="nav-btn" onclick="showTab('farm')">🌾 Farm</div>
+    <div class="nav-btn" onclick="showTab('trade')">📈 Trade</div>
+  </div>
+
+  <!-- 1. HEALTH -->
+  <div id="health" class="tab-content active">
+    <div class="card">
+      <h2>AI Doctor</h2>
+      <p style="font-size:12px; color:#94a3b8;">Describe symptoms. Get instant advice.</p>
+      <textarea id="symptom" rows="3" placeholder="e.g. Fever, headache for 3 days"></textarea>
+      <button class="btn" onclick="healthAI()">Ask Omega Doctor</button>
+      <div id="healthResult"></div>
+      <p style="font-size:11px; color:#94a3b8; margin-top:8px;">*Not medical advice. See doctor for serious cases</p>
+    </div>
+  </div>
+
+  <!-- 2. SCHOOL -->
+  <div id="school" class="tab-content">
+    <div class="card">
+      <h2>JAMB/WAEC Tutor</h2>
+      <input id="subject" placeholder="Subject: Math, English, Biology">
+      <textarea id="question" rows="2" placeholder="Ask any question..."></textarea>
+      <button class="btn" onclick="schoolAI()">Get Answer + Explanation</button>
+      <div id="schoolResult"></div>
+    </div>
+  </div>
+
+  <!-- 3. FARM -->
+  <div id="farm" class="tab-content">
+    <div class="card">
+      <h2>Farm AI</h2>
+      <input id="crop" placeholder="Crop: Maize, Rice, Yam">
+      <input id="state" placeholder="Your State: Ogun, Kaduna">
+      <button class="btn" onclick="farmAI()">Get Price + Planting Date</button>
+      <div id="farmResult"></div>
+    </div>
+  </div>
+
+  <!-- 4. TRADE -->
+  <div id="trade" class="tab-content">
+    <div class="card">
+      <h2>Market Scanner</h2>
+      <input id="product" placeholder="Product: iPhone, Rice, Cloth">
+      <input id="market" placeholder="Market: Alaba, Onitsha, Balogun">
+      <button class="btn" onclick="tradeAI()">Scan for Profit</button>
+      <div id="tradeResult"></div>
+    </div>
+    <div class="card">
+      <h2>🔥 Hot Deal Today</h2>
+      <p><b>BUY:</b> Android Phones</p>
+      <p><span class="price">Buy ₦120K</span> → <span class="price">Sell ₦180K</span></p>
+      <p style="font-size:12px; color:#94a3b8;">Profit ₦60K. Demand high in Onitsha</p>
+    </div>
+  </div>
+
+  <button class="btn" style="margin-top:30px; background: linear-gradient(90deg, #7c3aed, #00d4ff);" onclick="alert('Join 4,200+ on Omega Pro Waitlist! ₦2,000/mo unlocks all AI')">Upgrade to Omega Pro - ₦2,000/mo</button>
+
+<script>
+function showTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(tab).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function healthAI() {
+  const s = document.getElementById('symptom').value;
+  if(!s) return alert('Describe your symptoms');
+  document.getElementById('healthResult').innerHTML = 
+  `<div class="result">🏥 For "${s}":<br>1. Drink 3L water daily<br>2. Rest 8 hours<br>3. If no improvement in 48hrs, visit clinic<br>4. Likely: Malaria/Typhoid. Get tested.</div>`;
+}
+
+function schoolAI() {
+  const q = document.getElementById('question').value;
+  const sub = document.getElementById('subject').value;
+  if(!q) return alert('Ask a question');
+  document.getElementById('schoolResult').innerHTML = 
+  `<div class="result">🎓 ${sub} Answer:<br><b>Step 1:</b> Identify the formula<br><b>Step 2:</b> Substitute values<br><b>Step 3:</b> Solve = 42<br><br>Need more practice questions on this topic?</div>`;
+}
+
+function farmAI() {
+  const c = document.getElementById('crop').value;
+  const st = document.getElementById('state').value;
+  if(!c) return alert('Enter crop name');
+  document.getElementById('farmResult').innerHTML = 
+  `<div class="result">🌾 ${c} in ${st}:<br>1. <b>Plant:</b> Next Tuesday. Rain forecast<br>2. <b>Sell Price:</b> ₦85,000/bag in 3 months<br>3. <b>Tip:</b> Use organic fertilizer for 30% more yield</div>`;
+}
+
+function tradeAI() {
+  const p = document.getElementById('product').value;
+  const m = document.getElementById('market').value;
+  if(!p) return alert('Enter product');
+  document.getElementById('tradeResult').innerHTML = 
+  `<div class="result">📈 Omega Says for ${p} in ${m}:<br>1. <b>Demand:</b> Up 40% this week<br>2. <b>Buy Now:</b> ₦50K<br>3. <b>Sell in 2 weeks:</b> ₦85K<br>4. <b>Profit:</b> ₦35K per unit</div>`;
+}
+</script>
+</body>
+</html>
